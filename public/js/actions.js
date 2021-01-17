@@ -515,6 +515,7 @@ document.getElementById("newFolder").addEventListener("click", () => {
 
             } else {
                 _("refresh").click()
+                socket.emit("newFolder", {});
             }
         })
     }
@@ -565,7 +566,6 @@ document.getElementById("status").addEventListener("click", () => {
         _("percentage").innerText = (parseFloat((usage / 10240) * 100)).toFixed(2) + "%"
     })
 
-   
     let statView = _('statView');
     statView.style.visibility = "visible";
     statView.style.opacity = "1";
@@ -696,6 +696,8 @@ async function completeHandler() {
         _(lastEl).style.background = "#00ff007e"
         await uploadFile(upFiles[fileUpCount])
     }
+
+    socket.emit("upload", {});
 }
 
 function errorHandler() {
@@ -727,9 +729,14 @@ function abortHandler() {
         fileUpCount = 0;
         upFiles = [];
     } 
-
 }
 
 function _(el) {
     return document.getElementById(el);
 }
+
+let socket = io();
+
+socket.on('refresh', function() {
+    _("refresh").click()
+});

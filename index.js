@@ -1,4 +1,5 @@
 const express = require('express');
+const socket = require("socket.io");
 const morgan = require('morgan');
 const formidable = require('express-formidable');
 const fs = require('fs');
@@ -19,21 +20,17 @@ app.set('port', 80);
 //Routes
 app.use("/", express.static(path.join(__dirname, 'public')));
 
-
 app.get("/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, 'public/favicon.ico'));
 });
-
 
 app.get("/data", (req, res) => {
     res.send(fileWorker.getDetails(path.join(__dirname, 'disk/storage')));
 });
 
-
 app.get("/download", (req, res) => {
 
     var file = fs.readFileSync(path.join(__dirname, 'disk/storage/' + req.query.path), 'binary');
-
     res.setHeader('Content-Length', file.length);
     res.write(file, 'binary');
     res.end();
@@ -56,7 +53,6 @@ app.post("/upload", (req, res) => {
 
 });
 
-
 app.post("/newfolder", (req, res) => {
 
     let newDir = path.join(__dirname, 'disk/storage/' + req.query.path);
@@ -70,16 +66,14 @@ app.post("/newfolder", (req, res) => {
 
 });
 
-
 app.delete("/data", async function (req, res) {
 
     let reqFile = path.join(__dirname, 'disk/storage/' + req.query.path);
     let trash = fs.readFileSync(path.join(__dirname, 'disk/trash/trash.json'), {encoding: 'utf-8'});
 
-    let copyResult;
+    let copyResult = true; //Remenber, this is true to permit the flow without copying the file
     let delResult
     let trashArr = JSON.parse(trash);
-
 
     let trashEl = {
         "date": new Date(),
@@ -92,14 +86,14 @@ app.delete("/data", async function (req, res) {
     trashArr.trash.push(trashEl);
 
     fs.writeFileSync(path.join(__dirname, 'disk/trash/trash.json'), JSON.stringify(trashArr));
-
+/*
     try {
         fileOptions.copy(reqFile, path.join(__dirname, 'disk/trash/' + fileOptions.fileName(reqFile)));
         copyResult = true
     } catch (error) {
         copyResult = false
     }
-
+*/
     try {
         fileOptions.delete(reqFile);
         delResult = true
@@ -112,26 +106,15 @@ app.delete("/data", async function (req, res) {
     } else {
         res.status(400).send("");
     }
-
 });
-
 
 app.get("/changedir", (req, res) => {
     res.send(fileWorker.getDetails(path.join(__dirname, 'disk/storage/' + req.query.path)));
 });
 
-
-app.get("/trash", (req,res) => {
-    let trash = fs.readFileSync(path.join(__dirname, 'disk/trash/trash.json'), {encoding: 'utf-8'});
-    trash = JSON.parse(trash);
-    res.status(200).json(trash);
-
-})
-
 app.get("/stats", (req,res) => {
 
     let stats = {};
-
     getFolderSize(path.join(__dirname, 'disk/storage/'), (err, size) => {
         if (err) { 
             res.status(400).send();
@@ -146,7 +129,13 @@ app.get("/stats", (req,res) => {
     stats.directories = dirDet[0];
 
     setTimeout(() => { res.status(200).json(stats)}, 2000);
+})
 
+app.get("/trash", (req,res) => {
+
+    let trash = fs.readFileSync(path.join(__dirname, 'disk/trash/trash.json'), {encoding: 'utf-8'});
+    trash = JSON.parse(trash);
+    res.status(200).json(trash);
 })
 
 app.post("/trash", (req,res) => {
@@ -154,7 +143,7 @@ app.post("/trash", (req,res) => {
     let trash = fs.readFileSync(path.join(__dirname, 'disk/trash/trash.json'), {encoding: 'utf-8'});
     let trashArr = JSON.parse(trash);
 
-    let resThis =  trashArr.trash[req.query.index];
+    let restoreThis =  trashArr.trash[req.query.index]; //Meta to restore the req file
     trashArr.trash.splice(req.query.index, 1);
 
     fs.writeFileSync(path.join(__dirname, 'disk/trash/trash.json'), JSON.stringify(trashArr));
@@ -166,7 +155,25 @@ app.post("/trash", (req,res) => {
 })
 //Until here
 
-app.listen(app.get('port'), ()=> {
+const server = app.listen(app.get('port'), ()=> {
     console.log('Server on port ' + app.get('port'));
-})
+});
+
+const io = socket(server);
+
+io.on("connection", (socket) => {
+    console.log("Socket connection: ", socket.id);
+
+    socket.on('upload', function() {
+        socket.broadcast.emit('refresh');
+        console.log("Socket event (upload)");
+    });
+
+    socket.on('newFolder', function() {
+        io.sockets.emit('refresh');
+        console.log("Socket event (new folder)");
+    });
+});
+
+
 
