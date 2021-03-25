@@ -584,6 +584,7 @@ document.getElementById("status").addEventListener("click", () => {
 
 
 function OfficeDoc (fileExt) {
+    fileExt = fileExt.toUpperCase();
 
     if (fileExt == 'doc' || fileExt == 'docx') {
         return 'word';
@@ -596,7 +597,7 @@ function OfficeDoc (fileExt) {
     } else if (fileExt == '') {
         return 'unknown';
     } else {
-        return fileExt;
+        return 'unknown';
     }
 
 }
@@ -613,37 +614,6 @@ function formatBytes(bytes, decimals = 2) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-/*
-
-document.getElementById("switch").addEventListener("click", theme)
-
-let status = undefined;
-
-function theme() {
-
-    try {
-        status = localStorage.getItem("starTheme");
-    } catch (error) {
-        console.log(error);
-        localStorage.setItem("starTheme", false);
-        status = false;
-    }
-    console.log(status);
-    if(status == "true") {
-        document.getElementById("header").style.background = "#9e9e9e"
-        document.getElementById("body").style.background = "#9e9e9e"
-        document.getElementById("body").style.color = "#000"
-        localStorage.setItem("starTheme", false)
-    } else if(status == "false"){
-        document.getElementById("header").style.background = "#1a1727"
-        document.getElementById("body").style.background = "#1a1727"
-        document.getElementById("body").style.color = "#fff"
-        localStorage.setItem("starTheme", true)
-    }
-    
-}
-
-*/
 
 async function uploadFile(file) {
 
