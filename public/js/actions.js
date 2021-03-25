@@ -152,6 +152,7 @@ function addEvent(files) {
     for (let i = 0; i < deleteBtn.length; i++) {
         
         deleteBtn[i].addEventListener('click', function (e) {
+            e.stopPropagation();
             let selParent = e.target.parentElement;
             let deleteFile = route + "/" + store[selParent.getAttribute('index')].name;
 
@@ -171,7 +172,7 @@ function addEvent(files) {
                     setTimeout(() => {showAlert.parentElement.style.background = "#91919127"}, 4000)
                 })
             } 
-        })
+        }, true)
     }
 //Actions to get file info
     let infoBtn = document.getElementsByClassName('fInfo');
