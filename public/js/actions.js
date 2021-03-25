@@ -409,7 +409,7 @@ document.getElementById("trash").addEventListener("click", () => {
         for(let i = 0; i < data.trash.length; i++) {
             filesView.innerHTML += `
             <div class="dFile">
-                <img src="/img/${OfficeDoc(data.trash[i].kind.toUpperCase())}.png" class="delIcon">
+                <img src="/img/${OfficeDoc(data.trash[i].kind).toUpperCase()}.png" class="delIcon">
                 <div>
                     <p>Name: <span>${data.trash[i].name}</span></p>
                     <p>Path: <span>${data.trash[i].origin}</span></p>
