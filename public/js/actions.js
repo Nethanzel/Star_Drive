@@ -23,7 +23,7 @@ function getData(dir) {
         });
 }
 
-function loadDir(data) {
+async function loadDir(data) {
 
     store = data;
     let explorerView = _('fileView');
@@ -48,9 +48,9 @@ function loadDir(data) {
         let fileName = data[i].name
 
         if (fileName.lastIndexOf(".") != -1 && data[i].kind != "dir") {
-            ext = OfficeDoc(data[i].extension);
+            ext = await OfficeDoc(data[i].extension);
         } else if (data[i].kind == "dir"){
-            ext = OfficeDoc(data[i].extension);
+            ext = await OfficeDoc(data[i].extension);
         } else {
             ext = "unknown";
         }
@@ -65,7 +65,7 @@ function loadDir(data) {
 
         resHTML.innerHTML = `
                 <div class="file_subfile" type="${data[i].kind}">
-                    <img src="/img/${ext.toUpperCase()}.png" class="extIcn">
+                    <img src="${ext}" class="extIcn">
                     <p tag="${data[i].name}">${fileName}</p>
 
                     <div class="file_tools" type="${data[i].kind}" name="${data[i].name}" index="${i}">
@@ -176,7 +176,7 @@ function addEvent(files) {
 
     for (let i = 0; i < infoBtn.length; i++) {
         
-        infoBtn[i].addEventListener('click', function (e) {
+        infoBtn[i].addEventListener('click', async function (e) {
 
             let selParent = e.target.parentElement;
             let infoViewCard = _('infoView_card')
@@ -188,7 +188,7 @@ function addEvent(files) {
             else {type = "Directory"}
 
             let detailsHTML = `
-            <img src="/img/${OfficeDoc(details.extension.toUpperCase())}.png">
+            <img src="${await OfficeDoc(details.extension)}">
             <h2><span>File name: </span> ${details.name}</h2>
             <p><span>Type: </span> ${type}</p>
             <p><span>Size: </span> ${formatBytes(details.size)}</p>
@@ -238,7 +238,7 @@ document.getElementById('goback').addEventListener('click', function() {
 
 })
 
-document.getElementById('refresh').addEventListener('click', async function() {
+document.getElementById('refresh').addEventListener('click', function() {
 
 
     _("infoView").click()
@@ -247,13 +247,13 @@ document.getElementById('refresh').addEventListener('click', async function() {
     _("statView").click()
 
     _('fileView').innerHTML = "";
-    await getData(`/changedir?path=${route}`);
+    getData(`/changedir?path=${route}`);
 
 })
 
 let upFiles = [];
 
-document.getElementById("upload").addEventListener("click", () => {
+document.getElementById("upload").addEventListener("click", async () => {
 
     _("infoView").click()
     _("trashView").click()
@@ -300,7 +300,7 @@ document.getElementById("upload").addEventListener("click", () => {
     `;
 
     let inputFile = _("upFiles");
-    inputFile.onchange = () => {
+    inputFile.onchange = async () => {
 
         upFiles = Array.from(inputFile.files);
         _("filePreview").innerHTML = "";
@@ -311,7 +311,7 @@ document.getElementById("upload").addEventListener("click", () => {
             let ext;
 
             if (fileName.lastIndexOf(".") != -1) {
-                ext = OfficeDoc(fileName.substring(fileName.lastIndexOf(".")+1, fileName.length));
+                ext = await OfficeDoc(fileName.substring(fileName.lastIndexOf(".")+1, fileName.length));
             } else {
                 ext = "unknown";
             }
@@ -321,7 +321,7 @@ document.getElementById("upload").addEventListener("click", () => {
             _("filePreview").innerHTML +=`
                 <div class="preview" id="upload${i}">
                     <div class="details">
-                        <img src="/img/${ext.toUpperCase()}.png" id="imgPreview">
+                        <img src="${ext}" id="imgPreview">
                         <p>${fileName}</p>
                         <p>(${formatBytes(upFiles[i].size)})</p>
                     </div>
@@ -377,9 +377,7 @@ document.getElementById("upload").addEventListener("click", () => {
 
 })
 
-
-
-document.getElementById("trash").addEventListener("click", () => {
+document.getElementById("trash").addEventListener("click", async () => {
 
     _("statView").click()
     _("uploadView").click()
@@ -398,7 +396,7 @@ document.getElementById("trash").addEventListener("click", () => {
 
     fetch("/trash")
     .then(response => response.json())
-    .then(data => {
+    .then( async (data) => {
 
         if(data.trash.length == 0) {
             filesView.innerHTML += `
@@ -409,7 +407,7 @@ document.getElementById("trash").addEventListener("click", () => {
         for(let i = 0; i < data.trash.length; i++) {
             filesView.innerHTML += `
             <div class="dFile">
-                <img src="/img/${OfficeDoc(data.trash[i].kind).toUpperCase()}.png" class="delIcon">
+                <img src="${await OfficeDoc(data.trash[i].kind)}" class="delIcon">
                 <div>
                     <p>Name: <span>${data.trash[i].name}</span></p>
                     <p>Path: <span>${data.trash[i].origin}</span></p>
@@ -468,7 +466,6 @@ document.getElementById("trash").addEventListener("click", () => {
 
 })
 
-
 document.getElementById("newFolder").addEventListener("click", () => {
 
     _("statView").click
@@ -494,7 +491,7 @@ document.getElementById("newFolder").addEventListener("click", () => {
 
                 resHTML.innerHTML = `
                         <div class="file_subfile" type="dir">
-                            <img src="/img/dir.png" class="extIcn">
+                            <img src="/img/DIR.png" class="extIcn">
                             <p>${newFolderName}</p>
 
                             <div class="file_tools" type="dir" name="${newFolderName}">
@@ -521,7 +518,6 @@ document.getElementById("newFolder").addEventListener("click", () => {
     }
     
 })
-
 
 document.getElementById("status").addEventListener("click", () => {
 
@@ -581,37 +577,6 @@ document.getElementById("status").addEventListener("click", () => {
     })
 
 })
-
-function OfficeDoc (fileExt) {
-    fileExt = fileExt.toLowerCase();
-
-    if (fileExt == 'doc' || fileExt == 'docx') {
-        return 'word';
-    } else if (fileExt == 'xls' || fileExt == 'xlsx') {
-        return 'excel';
-    } else if (fileExt == 'mdb' || fileExt == 'accdb') {
-        return 'access';
-    } else if (fileExt == 'pptx' || fileExt == 'ppt') {
-        return 'powerpoint';
-    } else if (fileExt == '') {
-        return 'unknown';
-    } else {
-        return fileExt;
-    }
-
-}
-
-function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
-
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
 
 
 async function uploadFile(file) {
@@ -709,3 +674,37 @@ let socket = io();
 socket.on('refresh', function() {
     _("refresh").click()
 });
+
+
+//Utilis
+async function OfficeDoc (fileExt) {
+    fileExt = fileExt.toLowerCase();
+
+    if (fileExt == 'doc' || fileExt == 'docx') {
+        return '/img/WORD.png';
+    } else if (fileExt == 'xls' || fileExt == 'xlsx') {
+        return '/img/EXCEL.png';
+    } else if (fileExt == 'mdb' || fileExt == 'accdb') {
+        return '/img/ACCESS.png';
+    } else if (fileExt == 'pptx' || fileExt == 'ppt') {
+        return '/img/POWERPOINT.png';
+    } else if (fileExt == '') {
+        return '/img/UNKNOWN.png';
+    } else {
+
+        const imgEx = await fetch(`/img/${fileExt.toUpperCase()}.png`);
+        return imgEx.status == 200 ? `/img/${fileExt.toUpperCase()}.png`: `/img/UNKNOWN.png`;
+    }
+}
+
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
