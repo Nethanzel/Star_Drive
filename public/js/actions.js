@@ -689,10 +689,10 @@ async function OfficeDoc (fileExt) {
     } else if (fileExt == 'pptx' || fileExt == 'ppt') {
         return '/img/POWERPOINT.png';
     } else if (fileExt == '') {
-        return '/img/UNKNOWN.png';
+        return '/img/unknw.png';
     } else {
         const imgEx = await fetch(`/img/${fileExt.toUpperCase()}.png`);
-        return imgEx.status === 200 ? `/img/${fileExt.toUpperCase()}.png` : `/img/UNKNOWN.png`;
+        return imgEx.status === 200 ? `/img/${fileExt.toUpperCase()}.png` : `/img/unknw.png`;
     }
 }
 
