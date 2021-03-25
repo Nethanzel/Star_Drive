@@ -482,6 +482,8 @@ document.getElementById("newFolder").addEventListener("click", () => {
         .then(response => {
             if(response.status !== 200) {
 
+                socket.emit("newFolder", {});
+
                 let fView = _('fileView')
 
                 let resHTML = document.createElement("div");
@@ -510,9 +512,6 @@ document.getElementById("newFolder").addEventListener("click", () => {
 
                 setTimeout(() => {resHTML.remove()}, 5000)
 
-            } else {
-                _("refresh").click()
-                socket.emit("newFolder", {});
             }
         })
     }
