@@ -584,7 +584,7 @@ document.getElementById("status").addEventListener("click", () => {
 
 
 function OfficeDoc (fileExt) {
-    fileExt = fileExt.toUpperCase();
+    fileExt = fileExt.toLowerCase();
 
     if (fileExt == 'doc' || fileExt == 'docx') {
         return 'word';
