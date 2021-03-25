@@ -539,7 +539,7 @@ document.getElementById("newFolder").addEventListener("click", () => {
                 fView.appendChild(resHTML);
 
                 setTimeout(() => {resHTML.style.background = "#91919127"}, 5000);
-                setTimeout(() => { _("refresh").click() }, 8000);
+                setTimeout(() => { _("refresh").click() }, 6500);
 
                 socket.emit("newFolder", {});
             }
