@@ -597,7 +597,7 @@ function OfficeDoc (fileExt) {
     } else if (fileExt == '') {
         return 'unknown';
     } else {
-        return 'unknown';
+        return fileExt;
     }
 
 }
