@@ -166,11 +166,16 @@ io.on("connection", (socket) => {
     console.log("Socket connection: ", socket.id);
 
     socket.on('upload', function() {
-        socket.broadcast.emit('refresh');
+        io.sockets.emit('refresh');
         console.log("Socket event (upload)");
     });
 
     socket.on('newFolder', function() {
+        socket.broadcast.emit('refresh');
+        console.log("Socket event (new folder)");
+    });
+
+    socket.on('deleted', function() {
         io.sockets.emit('refresh');
         console.log("Socket event (new folder)");
     });
