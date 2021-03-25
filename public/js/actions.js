@@ -536,7 +536,7 @@ document.getElementById("newFolder").addEventListener("click", () => {
                 resHTML.style.background = "#00ff007e";
                 fView.appendChild(resHTML);
 
-                setTimeout(() => {resHTML.style.background = "#91919127"});
+                setTimeout(() => {resHTML.style.background = "#91919127"}, 5000);
 
                 socket.emit("newFolder", {});
             }
