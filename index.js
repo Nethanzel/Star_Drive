@@ -15,7 +15,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(formidable());
-app.set('port', 80);
+app.set('port', process.env.PORT || 80);
 
 //Routes
 app.use("/", express.static(path.join(__dirname, 'public')));
