@@ -532,10 +532,11 @@ document.getElementById("newFolder").addEventListener("click", () => {
                         `;
 
                 setTimeout(() => {resHTML.style.transform = "scale(1)"}, 1*10)
-                setTimeout(() => {resHTML.style.transform = "scale(0)"}, 3000)
 
                 resHTML.style.background = "#00ff007e";
                 fView.appendChild(resHTML);
+
+                setTimeout(() => {resHTML.style.background = "#91919127"});
 
                 socket.emit("newFolder", {});
             }
