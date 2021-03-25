@@ -582,7 +582,6 @@ document.getElementById("status").addEventListener("click", () => {
 
 })
 
-
 function OfficeDoc (fileExt) {
     fileExt = fileExt.toLowerCase();
 
