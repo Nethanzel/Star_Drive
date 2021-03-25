@@ -188,7 +188,7 @@ function addEvent(files) {
             else {type = "Directory"}
 
             let detailsHTML = `
-            <img src="/img/${OfficeDoc(details.extension)}.png">
+            <img src="/img/${OfficeDoc(details.extension.toUpperCase())}.png">
             <h2><span>File name: </span> ${details.name}</h2>
             <p><span>Type: </span> ${type}</p>
             <p><span>Size: </span> ${formatBytes(details.size)}</p>
@@ -321,7 +321,7 @@ document.getElementById("upload").addEventListener("click", () => {
             _("filePreview").innerHTML +=`
                 <div class="preview" id="upload${i}">
                     <div class="details">
-                        <img src="/img/${ext}.png" id="imgPreview">
+                        <img src="/img/${ext.toUpperCase()}.png" id="imgPreview">
                         <p>${fileName}</p>
                         <p>(${formatBytes(upFiles[i].size)})</p>
                     </div>
@@ -409,7 +409,7 @@ document.getElementById("trash").addEventListener("click", () => {
         for(let i = 0; i < data.trash.length; i++) {
             filesView.innerHTML += `
             <div class="dFile">
-                <img src="/img/${OfficeDoc(data.trash[i].kind)}.png" class="delIcon">
+                <img src="/img/${OfficeDoc(data.trash[i].kind.toUpperCase())}.png" class="delIcon">
                 <div>
                     <p>Name: <span>${data.trash[i].name}</span></p>
                     <p>Path: <span>${data.trash[i].origin}</span></p>
