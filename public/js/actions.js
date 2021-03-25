@@ -162,11 +162,13 @@ function addEvent(files) {
                     if(response.status == 200) {
                         _('fileView').innerHTML = "";
                         getData(`/changedir?path=${route}`);
-                    } else {
-                        let showAlert = selParent.parentElement;
-                        showAlert.parentElement.style.background = "#ff00007e"
-                        setTimeout(() => {showAlert.parentElement.style.background = "#91919127"}, 4000)
-                    }
+                        socket.emit("deleted", {});
+                    } 
+                })
+                .catch(() => {
+                    let showAlert = selParent.parentElement;
+                    showAlert.parentElement.style.background = "#ff00007e"
+                    setTimeout(() => {showAlert.parentElement.style.background = "#91919127"}, 4000)
                 })
             } 
         })
@@ -537,6 +539,7 @@ document.getElementById("newFolder").addEventListener("click", () => {
                 fView.appendChild(resHTML);
 
                 setTimeout(() => {resHTML.style.background = "#91919127"}, 5000);
+                setTimeout(() => { _("refresh").click() }, 8000);
 
                 socket.emit("newFolder", {});
             }
