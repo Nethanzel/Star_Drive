@@ -538,8 +538,13 @@ document.getElementById("newFolder").addEventListener("click", () => {
                 resHTML.style.background = "#00ff007e";
                 fView.appendChild(resHTML);
 
+                let update = () => {setTimeout(() => { _("refresh").click() }, 6500);}
+
                 setTimeout(() => {resHTML.style.background = "#91919127"}, 5000);
-                setTimeout(() => { _("refresh").click() }, 6500);
+
+                clearInterval(update)
+                update();
+                
 
                 socket.emit("newFolder", {});
             }
