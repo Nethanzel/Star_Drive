@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Cloud</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body id="body">
+    <div>
+        <section id="header">
+            <div id="logo">
+                <img src="/img/logo.png" alt="logo">
+            </div>
+
+            <div class="viewHeader">
+                <img src="/img/refresh.png" class="action" id="refresh">
+                <img src="/img/goback.png" id="goback">
+                <p id="route"></p>
+                
+            </div>
+
+            <div class="headerPartner">
+                <img src="/img/newFolder.png" class="action" id="newFolder">
+                <img src="/img/upload.png" class="action" id="upload">
+                <img src="/img/trash.png" class="action" id="trash">
+                <img src="/img/stats.png" class="action" id="status">
+            </div>
+
+        </section>
+
+        <section class="explorerView" id="fileView">
+            
+        </section>
+    </div>
+
+    <div id="infoView">
+        <div id="infoView_card">
+        </div>
+    </div>
+
+    <div id="uploadView">
+        <div id="uploadControls">
+        </div>
+    </div>
+
+    <div id="trashView">
+        <div id="trashControls">
+        </div>
+    </div>
+
+    <div id="statView">
+        <div id="statControls">
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/pBar.js"></script>
+</body>
+</html>
