@@ -691,9 +691,8 @@ async function OfficeDoc (fileExt) {
     } else if (fileExt == '') {
         return '/img/UNKNOWN.png';
     } else {
-
         const imgEx = await fetch(`/img/${fileExt.toUpperCase()}.png`);
-        return imgEx.status == 200 ? `/img/${fileExt.toUpperCase()}.png`: `/img/UNKNOWN.png`;
+        return imgEx.status === 200 ? `/img/${fileExt.toUpperCase()}.png` : `/img/UNKNOWN.png`;
     }
 }
 
