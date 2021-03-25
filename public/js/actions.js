@@ -482,8 +482,6 @@ document.getElementById("newFolder").addEventListener("click", () => {
         .then(response => {
             if(response.status !== 200) {
 
-                socket.emit("newFolder", {});
-
                 let fView = _('fileView')
 
                 let resHTML = document.createElement("div");
@@ -512,6 +510,34 @@ document.getElementById("newFolder").addEventListener("click", () => {
 
                 setTimeout(() => {resHTML.remove()}, 5000)
 
+            } else {
+                let fView = _('fileView')
+
+                let resHTML = document.createElement("div");
+                resHTML.classList.add("file");
+
+                if(newFolderName.length > 19) {newFolderName = newFolderName.slice(0, 19) + '...'}
+
+                resHTML.innerHTML = `
+                        <div class="file_subfile" type="dir">
+                            <img src="/img/DIR.png" class="extIcn">
+                            <p>${newFolderName}</p>
+
+                            <div class="file_tools" type="dir" name="${newFolderName}">
+
+                                <img src="/img/trash.png" class="deleteAction delete">
+                                <img src="/img/info.png" class="infoAction fInfo">
+                            </div>
+                        </div>
+                        `;
+
+                setTimeout(() => {resHTML.style.transform = "scale(1)"}, 1*10)
+                setTimeout(() => {resHTML.style.transform = "scale(0)"}, 3000)
+
+                resHTML.style.background = "#00ff007e";
+                fView.appendChild(resHTML);
+
+                socket.emit("newFolder", {});
             }
         })
     }
