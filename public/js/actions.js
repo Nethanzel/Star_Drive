@@ -162,7 +162,6 @@ function addEvent(files) {
                 .then(response => {
                     if(response.status == 200) {
                         _('fileView').innerHTML = "";
-                        getData(`/changedir?path=${route}`);
                         socket.emit("deleted", {});
                     } 
                 })
