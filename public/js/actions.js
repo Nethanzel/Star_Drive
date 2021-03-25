@@ -65,7 +65,7 @@ function loadDir(data) {
 
         resHTML.innerHTML = `
                 <div class="file_subfile" type="${data[i].kind}">
-                    <img src="/img/${ext}.png" class="extIcn">
+                    <img src="/img/${ext.toUpperCase()}.png" class="extIcn">
                     <p tag="${data[i].name}">${fileName}</p>
 
                     <div class="file_tools" type="${data[i].kind}" name="${data[i].name}" index="${i}">
