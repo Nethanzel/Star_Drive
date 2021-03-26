@@ -19,13 +19,13 @@ function getData(dir) {
     fetch(dir)
         .then(response => response.json())
         .then(data => {
+            store = data;
             loadDir(data);
         });
 }
 
 async function loadDir(data) {
 
-    store = data;
     let explorerView = _('fileView');
     explorerView.innerHTML = "";
 
@@ -85,7 +85,6 @@ async function loadDir(data) {
     let files = document.getElementsByClassName('file_subfile');
     addEvent(files);
 }
-
 
 function addEvent(files) {
 
@@ -242,18 +241,23 @@ document.getElementById('goback').addEventListener('click', function() {
 
 document.getElementById('refresh').addEventListener('click', function() {
 
-
     _("infoView").click()
     _("trashView").click()
-    _("uploadView").click()
     _("statView").click()
+
+    if(!afterUpload) {
+        _("uploadView").click()
+    }
 
     _('fileView').innerHTML = "";
     getData(`/changedir?path=${route}`);
 
+    afterUpload = false;
+
 })
 
 let upFiles = [];
+let afterUpload = false; //To know if a download was done
 
 document.getElementById("upload").addEventListener("click", async () => {
 
@@ -273,7 +277,7 @@ document.getElementById("upload").addEventListener("click", async () => {
             uploadHideView.style.opacity = "0";
             uploadHideView.style.transition = "visibility .3s, opacity .3s ease-out";
         }
-    })
+    }, true)
 
 
     let uploadControls = _('uploadControls')
@@ -343,7 +347,7 @@ document.getElementById("upload").addEventListener("click", async () => {
 
         let removers = document.getElementsByClassName("remove");
 
-        for(let i = 0; i < removers.length; i++){
+        for(let i = 0; i < removers.length; i++) {
 
             removers[i].addEventListener("click", (e) => {
 
@@ -531,20 +535,19 @@ document.getElementById("newFolder").addEventListener("click", () => {
                                 <img src="/img/info.png" class="infoAction fInfo">
                             </div>
                         </div>
-                        `;
+                    `;
 
-                setTimeout(() => {resHTML.style.transform = "scale(1)"}, 1*10)
+                setTimeout(() => {resHTML.style.transform = "scale(1)"}, 1*10);
 
                 resHTML.style.background = "#00ff007e";
                 fView.appendChild(resHTML);
 
-                let update = () => {setTimeout(() => { _("refresh").click() }, 6500);}
+                let update = () => {setTimeout(() => { _("refresh").click() }, 6500)};
 
                 setTimeout(() => {resHTML.style.background = "#91919127"}, 5000);
 
-                clearInterval(update)
+                clearInterval(update);
                 update();
-                
 
                 socket.emit("newFolder", {});
             }
@@ -655,6 +658,11 @@ async function completeHandler() {
 
         fileUpCount = 0;
         upFiles = [];
+
+        afterUpload = true;
+
+        socket.emit("upload", {});
+        _("refresh").click();
     } else {
 //        _("upStatus").innerHTML = event.target.responseText;
         _("progressBar").value = 0;
@@ -664,8 +672,6 @@ async function completeHandler() {
         _(lastEl).style.background = "#00ff007e"
         await uploadFile(upFiles[fileUpCount])
     }
-
-    socket.emit("upload", {});
 }
 
 function errorHandler() {
@@ -680,8 +686,7 @@ function errorHandler() {
     } else {
         fileUpCount = 0;
         upFiles = [];
-    }
-    
+    }    
 }
 
 function abortHandler() {
@@ -706,7 +711,8 @@ function _(el) {
 let socket = io();
 
 socket.on('refresh', function() {
-    _("refresh").click()
+    _('fileView').innerHTML = "";
+    getData(`/changedir?path=${route}`);
 });
 
 

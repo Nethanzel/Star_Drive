@@ -166,7 +166,7 @@ io.on("connection", (socket) => {
     console.log("Socket connection: ", socket.id);
 
     socket.on('upload', function() {
-        io.sockets.emit('refresh');
+        socket.broadcast.emit('refresh');
         console.log("Socket event (upload)");
     });
 
