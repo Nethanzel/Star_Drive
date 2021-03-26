@@ -178,7 +178,7 @@ function addEvent(files) {
     for (let i = 0; i < infoBtn.length; i++) {
         
         infoBtn[i].addEventListener('click', async function (e) {
-
+            e.stopPropagation();
             let selParent = e.target.parentElement;
             let infoViewCard = _('infoView_card')
 
@@ -214,7 +214,7 @@ function addEvent(files) {
                 }
             })
 
-        })
+        }, true)
     }
 
 }
