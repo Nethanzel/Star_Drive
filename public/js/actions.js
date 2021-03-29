@@ -19,14 +19,17 @@ function getData(dir) {
     fetch(dir)
         .then(response => response.json())
         .then(data => {
-            loadDir(data);
+            loadDir(data, dir);
         });
 }
 
-async function loadDir(data) {
+async function loadDir(data, dir) {
     store = data;
     let explorerView = _('fileView');
     explorerView.innerHTML = "";
+
+    let iDir = dir.lastIndexOf("/");
+    let cDir = dir.slice(iDir + 1, dir.length);
 
     if(data.length == 0) {
         let resHTML = document.createElement("div");
@@ -54,12 +57,6 @@ async function loadDir(data) {
             ext = "/img/unknw.png";
         }
 
-
-        let downloadBtn = "";
-        if (data[i].kind != "dir") {
-            downloadBtn = `<img src="/img/download.png" class="fileAction download">`;
-        }
-
         if(fileName.length > 18) {fileName = data[i].name.slice(0, 15) + '...'}
 
         resHTML.innerHTML = `
@@ -68,8 +65,8 @@ async function loadDir(data) {
                     <p tag="${data[i].name}">${fileName}</p>
 
                     <div class="file_tools" type="${data[i].kind}" name="${data[i].name}" index="${i}">
-                        ${downloadBtn}
-                        <img src="/img/trash.png" class="deleteAction delete">
+                        ${data[i].kind != "dir" ? '<img src="/img/download.png" class="fileAction download">' : ''}
+                        ${cDir == "APPS" ? '' : '<img src="/img/trash.png" class="deleteAction delete"></img>'}
                         <img src="/img/info.png" class="infoAction fInfo">
                     </div>
                 </div>
@@ -86,7 +83,6 @@ async function loadDir(data) {
 }
 
 function addEvent(files) {
-
     for (let i = 0; i < files.length; i++) {
         files[i].addEventListener('click',function(e) {
 
@@ -100,7 +96,7 @@ function addEvent(files) {
                 .then(data => {
                     route += "/" + dirName;
                     _('route').innerText += route;
-                    loadDir(data);
+                    loadDir(data, `/changedir?path=${route + '/' + dirName}`);
                 })
             }
         })
@@ -230,7 +226,7 @@ document.getElementById('goback').addEventListener('click', function() {
         fetch(`/changedir?path=${route}`)
             .then(response => response.json())
             .then(data => {
-                loadDir(data);
+                loadDir(data, `/changedir?path=${route}`);
             });
     }
 
