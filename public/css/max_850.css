@@ -1,0 +1,52 @@
+@media screen and (max-width: 850px) {
+    
+    #logo {
+        width: 10vw;
+    }    
+
+    #logo img {
+        height: 45px;
+        margin-left: 20px;
+        content: url("/img/logo.png");
+
+    }
+
+    .headerPartner {
+        width: 20vw;
+        height: 32px;
+
+        overflow: hidden;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 3px;
+        position: unset;
+    
+    }
+
+    .headerPartner img {
+        margin: 0 5px;
+    }
+    
+    
+    .viewHeader {
+        width: 70vw;
+    
+    }
+
+    #header {
+        display: flex;
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        background: #1a1727;
+        width: 100vw;
+        transition: 1s;
+    }
+
+    #options {
+        margin: 3px 5px;
+        display: none;
+
+    }
+}

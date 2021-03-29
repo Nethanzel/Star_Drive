@@ -1,0 +1,98 @@
+@media screen and (max-width: 600px) {
+    
+    #logo {
+        width: 90px;
+    }    
+
+    #logo img {
+        height: 45px;
+        margin-left: 20px;
+        content: url("/img/logo.png");
+    }
+    
+    .headerPartner {
+        width: 40px;
+        height: 38px;
+
+        overflow: hidden;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 3px;
+        position: fixed;
+
+        top: calc(95vh - 32px);
+        left: calc(50vw - 20px);
+    }
+    
+    .headerPartner img {
+        margin: 0px 5px;
+    }
+
+    #options {
+        margin: 3px 5px;
+        display: inline;
+    }
+    
+    .viewHeader {
+        width: 80vw;
+    
+    }
+
+    #header {
+        display: flex;
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        background: #1a1727;
+        width: 100vw;
+        transition: 1s;
+        max-height: 60px;
+    }
+
+    /* Info card */
+
+    
+    #infoView_card {
+        height: auto;
+        width: 75vw;
+        background: #403d50;
+        border-radius: 10px;
+        border: solid 2px #fff;
+        position: absolute;
+        padding: 15px;
+        top: 15vh;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    #infoView_card > * {
+        margin: 2px 0 10px 0;
+    }
+
+    #infoView_card h2 {
+        font-weight: unset;
+        align-self: center;
+        font-size: 22px;
+    }
+
+    #infoView_card h2 span{
+        font-weight: bold;
+    }
+
+    #infoView_card p {
+        font-size: 15px;
+    }
+
+    #infoView_card p span{
+        font-weight: bold;
+    }
+
+    #infoView_card img {
+        max-height: 180px;
+        max-width: 160px;
+        align-self: center;
+    }
+
+}

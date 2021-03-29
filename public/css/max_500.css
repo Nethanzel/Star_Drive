@@ -1,0 +1,68 @@
+@media screen and (max-width: 500px) {
+    
+    #logo {
+        width: 20px;
+    }    
+
+    #logo img {
+        height: 40px;
+        margin-left: 10px;
+        content: url("/img/a_logo.png");
+    }
+
+    .viewHeader {
+        width: 90vw;
+    
+    }
+}
+
+/* For files styles */
+@media screen and (max-width: 515px) {
+    
+    .file {
+        max-width: 120px;
+        height: 135px;
+        max-height: 135px;
+        box-sizing: content-box;
+        border: 1px solid #aaaaaa;
+        margin: 10px;
+        display: inline-block;
+        border-radius: 5px;
+        background: #91919127;
+        transform: scale(0);
+        transition: 0.5s;
+    }
+    .explorerView .file .file_subfile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        padding: 5px;
+        max-height: 135px;
+     
+    }
+    .explorerView .file p {
+        text-align: center;
+        font-size: 14px;
+        margin: 2px 2px 5px 2px;
+        cursor: default;
+        transition: 1s;
+    
+    }
+    .explorerView .file .file_subfile .extIcn {
+        max-height: 100px;
+    
+    }
+    .file_subfile .file_tools {
+        position:relative;
+        top: -20px;
+        height: 25px;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        opacity: 0;
+        transition: .5s;
+    }
+}

@@ -19,13 +19,12 @@ function getData(dir) {
     fetch(dir)
         .then(response => response.json())
         .then(data => {
-            store = data;
             loadDir(data);
         });
 }
 
 async function loadDir(data) {
-
+    store = data;
     let explorerView = _('fileView');
     explorerView.innerHTML = "";
 
@@ -52,7 +51,7 @@ async function loadDir(data) {
         } else if (data[i].kind == "dir"){
             ext = await OfficeDoc(data[i].extension);
         } else {
-            ext = "unknown";
+            ext = "/img/unknw.png";
         }
 
 
@@ -181,8 +180,7 @@ function addEvent(files) {
             e.stopPropagation();
             let selParent = e.target.parentElement;
             let infoViewCard = _('infoView_card')
-
-            let details = store[selParent.getAttribute('index')]
+            let details = store[selParent.getAttribute('index')];
             let type = "";
 
             if (details.kind != 'dir') {type = details.extension.toUpperCase() + " file"}
@@ -218,7 +216,6 @@ function addEvent(files) {
     }
 
 }
-
 
 document.getElementById('goback').addEventListener('click', function() {
 
@@ -319,7 +316,7 @@ document.getElementById("upload").addEventListener("click", async () => {
             if (fileName.lastIndexOf(".") != -1) {
                 ext = await OfficeDoc(fileName.substring(fileName.lastIndexOf(".")+1, fileName.length));
             } else {
-                ext = "unknown";
+                ext = "/img/unknw.png";
             }
 
             if(fileName.length > 13) {fileName = fileName.slice(0, 13) + '...'}
@@ -615,7 +612,6 @@ document.getElementById("status").addEventListener("click", () => {
 
 })
 
-
 async function uploadFile(file) {
 
     _("upload" + fileUpCount).style.background = "#ffbb007e"
@@ -714,7 +710,6 @@ socket.on('refresh', function() {
     _('fileView').innerHTML = "";
     getData(`/changedir?path=${route}`);
 });
-
 
 //Utilis
 async function OfficeDoc (fileExt) {

@@ -35,6 +35,8 @@ h1, h2, h3, h4, p {
 #logo img {
     height: 45px;
     margin-left: 20px;
+    content: url("/img/logo.png");
+
 }
 
 #header {
@@ -51,6 +53,14 @@ h1, h2, h3, h4, p {
     background: #bebebe83;
 }
 
+.headerPartner img {
+    margin: 0 5px;
+}
+
+#options {
+    display: none;
+
+}
 .headerPartner {
     background: #acacac69;
     height: 35px;
@@ -70,6 +80,8 @@ h1, h2, h3, h4, p {
 
     align-items: center;
     justify-content: center;
+    transition: all .5s;
+    position: unset;
 }
 
 .viewHeader:hover {
@@ -104,7 +116,6 @@ h1, h2, h3, h4, p {
 }
 
 .file {
-
     max-width: 150px;
     height: 165px;
     max-height: 185px;
@@ -116,7 +127,6 @@ h1, h2, h3, h4, p {
     background: #91919127;
     transform: scale(0);
     transition: 0.5s;
-    
 }
 
 .file:hover {
@@ -302,7 +312,7 @@ h1, h2, h3, h4, p {
 
 }
 
-#infoView_card > *{
+#infoView_card > * {
     margin: 5px 0 10px 0;
 }
 
@@ -484,6 +494,7 @@ h1, h2, h3, h4, p {
 }
 
 #trashControls {
+    height: 75vh;
     max-height: 750px;
     width: 900px;
     background: #403d50;
