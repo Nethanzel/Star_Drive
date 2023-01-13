@@ -58,7 +58,6 @@ const mkdir = function(dir) {
 };
 
 class fileOptions {
-
     isDir(path) {
         if(fs.existsSync(path)) {
 
